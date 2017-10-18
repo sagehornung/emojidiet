@@ -1,0 +1,24 @@
+{
+  "generator-ngx-rocket": {
+    "version": "2.2.0",
+    "props": {
+      "appName": "emojidiet",
+      "target": [
+        "web",
+        "cordova"
+      ],
+      "pwa": false,
+      "mobile": [
+        "ios",
+        "android"
+      ],
+      "webview": [
+        "wkwebview",
+        "crosswalk"
+      ],
+      "ui": "ionic",
+      "auth": true,
+      "projectName": "emojidiet"
+    }
+  }
+}

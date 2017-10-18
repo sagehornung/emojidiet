@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title><span translate>Home</span></ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-card text-center>
+    <h1>Moo Moo Buck-a-roo--!!</h1>
+    <img class="logo" src="assets/cool-emoji.png" alt="angular logo"/>
+    <ion-grid>
+      <ion-row>
+        <ion-col class="emotion-1">
+          <img src="http://www.freepngimg.com/download/emoji/1-2-wink-emoji-png.png">
+        </ion-col>
+        <ion-col class="emotion-2">
+          <img src="http://www.freepngimg.com/download/emoji/3-2-love-hearts-eyes-emoji-png.png">
+        </ion-col>
+        <ion-col class="emotion-3a">
+          <img src="http://www.freepngimg.com/download/emoji/4-2-smiling-face-with-sunglasses-cool-emoji-png.png">
+        </ion-col>
+        <ion-col class="emotion-4">
+          <img src="http://www.freepngimg.com/download/emoji/5-2-face-with-tears-of-joy-emoji-png.png">
+        </ion-col>
+        <ion-col class="emotion-5">
+          <img src="http://www.freepngimg.com/download/emoji/6-2-angel-blushing-smile-emoji-png.png">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="emotion-5">
+          <img src="http://www.freepngimg.com/download/emoji/7-2-sad-crying-emoji-png.png">
+        </ion-col>
+        <ion-col class="emotion-4">
+          <img src="http://www.freepngimg.com/download/emoji/8-2-fearful-emoji-png.png">
+        </ion-col>
+        <ion-col class="emotion-3b">
+          <img src="http://www.freepngimg.com/download/emoji/9-2-tongue-out-emoji-png.png">
+        </ion-col>
+        <ion-col class="emotion-2">
+          <img src="http://www.freepngimg.com/download/emoji/10-2-unamused-face-emoji-png.png">
+        </ion-col>
+        <ion-col class="emotion-1">
+          <img src="http://www.freepngimg.com/download/emoji/11-2-loudly-crying-emoji-png.png">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button>Save Meal</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <p>Now, with CSS3: </p>
+    <div class="cc-selector">
+      <ion-row>
+        <ion-col>
+          <input id="visa" type="radio" name="credit-card" value="visa" />
+          <label class="drinkcard-cc visa" for="visa"></label>
+        </ion-col>
+        <ion-col>
+          <input id="mastercard" type="radio" name="credit-card" value="mastercard" />
+          <label class="drinkcard-cc mastercard"for="mastercard"></label>
+        </ion-col>
+        <ion-col>
+          <input id="visa2" type="radio" name="credit-card" value="visa2" />
+          <label class="drinkcard-cc visa" for="visa2"></label>
+        </ion-col>
+        <ion-col>
+          <input id="mastercard2" type="radio" name="credit-card" value="mastercard2" />
+          <label class="drinkcard-cc mastercard"for="mastercard2"></label>
+        </ion-col>
+        <ion-col>
+          <input id="visa3" type="radio" name="credit-card" value="visa3" />
+          <label class="drinkcard-cc visa" for="visa3"></label>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-card-content>
+      <ion-card-title>
+        <span translate>Hello world !</span>
+        <app-emoji-selector></app-emoji-selector>
+      </ion-card-title>
+      <p>
+        <app-loader [isLoading]="isLoading"></app-loader>
+        <q [hidden]="isLoading">{{quote}}</q>
+      </p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
