@@ -54,35 +54,59 @@ q {
 
 .visa3{background-image:url(http://i.imgur.com/lXzJ1eB.png);}
 
+.emotion-emoji-1 {
+  background-image: url("http://www.freepngimg.com/download/emoji/1-2-wink-emoji-png.png");
+}
+
+.emotion-emoji-2 {
+  background-image: url("http://www.freepngimg.com/download/emoji/3-2-love-hearts-eyes-emoji-png.png");
+}
+
+.emotion-emoji-3 {
+  background-image: url("http://www.freepngimg.com/download/emoji/4-2-smiling-face-with-sunglasses-cool-emoji-png.png");
+}
+
+.emotion-emoji-4 {
+  background-image: url("http://www.freepngimg.com/download/emoji/5-2-face-with-tears-of-joy-emoji-png.png");
+}
+
+.emotion-emoji-5 {
+  background-image: url("http://www.freepngimg.com/download/emoji/6-2-angel-blushing-smile-emoji-png.png");
+}
+
 .cc-selector-2 input:active +.drinkcard-cc, .cc-selector input:active +.drinkcard-cc{opacity: .9;}
 
 .cc-selector-2 input:checked +.drinkcard-cc, .cc-selector input:checked +.drinkcard-cc{
   -webkit-filter: none;
   -moz-filter: none;
   filter: none;
+  background-color: darkblue;
+  border-radius: 5px;
 }
 
-.drinkcard-cc{
-  cursor:pointer;
-  background-size:contain;
-  background-repeat:no-repeat;
-  display:inline-block;
-  width:100px;height:70px;
+.drinkcard-cc {
+  cursor: pointer;
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
   -webkit-transition: all 100ms ease-in;
   -moz-transition: all 100ms ease-in;
   transition: all 100ms ease-in;
-  -webkit-filter: brightness(1.8) grayscale(.5) opacity(.7);
-  -moz-filter: brightness(1.8) grayscale(.5) opacity(.7);
-  filter: brightness(1.8) grayscale(.5) opacity(.7);
+  -webkit-filter: brightness(1.4) grayscale(0.5) opacity(0.9);
+  -moz-filter: brightness(1.4) grayscale(0.5) opacity(0.9);
+  filter: brightness(1.4) grayscale(0.5) opacity(0.9);
 }
 
 .drinkcard-cc:hover{
-  -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
-  -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
-  filter: brightness(1.2) grayscale(.5) opacity(.9);
+  -webkit-filter: brightness(1.2) grayscale(.5) opacity(.95);
+  -moz-filter: brightness(1.2) grayscale(.5) opacity(.95);
+  filter: brightness(1.2) grayscale(.5) opacity(.95);
 }
 
 /* Extras */
 a:visited{color:#888}
 a{color:#444;text-decoration:none;}
 p{margin-bottom:.3em;}
+

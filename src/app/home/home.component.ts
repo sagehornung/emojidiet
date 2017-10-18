@@ -14,7 +14,8 @@ export class HomeComponent implements OnInit {
 
   quote: string;
   isLoading: boolean;
-
+  entries: string;
+  selectedEntry: string;
   constructor(private quoteService: QuoteService) {}
 
   ngOnInit() {
@@ -24,4 +25,8 @@ export class HomeComponent implements OnInit {
       .subscribe((quote: string) => { this.quote = quote; });
   }
 
+  onSelectionChange(entry: string) {
+    this.selectedEntry = Object.assign({}, this.selectedEntry, entry);
+    console.log('Selected Entry = ', this.selectedEntry);
+  }
 }

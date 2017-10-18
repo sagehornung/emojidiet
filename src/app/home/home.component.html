@@ -51,31 +51,58 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <p>Now, with CSS3: </p>
+    <!-- WORKING CC -->
+    <!--<div class="cc-selector">-->
+      <!--<ion-row>-->
+        <!--<ion-col>-->
+          <!--<input id="visa" type="radio" name="credit-card" value="visa" />-->
+          <!--<label class="drinkcard-cc visa" for="visa"></label>-->
+        <!--</ion-col>-->
+        <!--<ion-col>-->
+          <!--<input id="mastercard" type="radio" name="credit-card" value="mastercard" />-->
+          <!--<label class="drinkcard-cc mastercard"for="mastercard"></label>-->
+        <!--</ion-col>-->
+        <!--<ion-col>-->
+          <!--<input id="visa2" type="radio" name="credit-card" value="visa2" />-->
+          <!--<label class="drinkcard-cc visa" for="visa2"></label>-->
+        <!--</ion-col>-->
+        <!--<ion-col>-->
+          <!--<input id="mastercard2" type="radio" name="credit-card" value="mastercard2" />-->
+          <!--<label class="drinkcard-cc mastercard"for="mastercard2"></label>-->
+        <!--</ion-col>-->
+        <!--<ion-col>-->
+          <!--<input id="visa3" type="radio" name="credit-card" value="visa3" />-->
+          <!--<label class="drinkcard-cc visa" for="visa3"></label>-->
+        <!--</ion-col>-->
+      <!--</ion-row>-->
+    <!--</div>-->
+    <!-- WORKING CC END-->
+
     <div class="cc-selector">
       <ion-row>
         <ion-col>
-          <input id="visa" type="radio" name="credit-card" value="visa" />
-          <label class="drinkcard-cc visa" for="visa"></label>
+          <input id="emotion-emoji-1" type="radio" name="emotion-emoji" value="1" (change)="onSelectionChange('1')"/>
+          <label class="drinkcard-cc emotion-emoji-1" for="emotion-emoji-1"></label>
         </ion-col>
         <ion-col>
-          <input id="mastercard" type="radio" name="credit-card" value="mastercard" />
-          <label class="drinkcard-cc mastercard"for="mastercard"></label>
+          <input id="emotion-emoji-2" type="radio" name="emotion-emoji" value="2" (change)="onSelectionChange('2')"/>
+          <label class="drinkcard-cc emotion-emoji-2"for="emotion-emoji-2"></label>
         </ion-col>
         <ion-col>
-          <input id="visa2" type="radio" name="credit-card" value="visa2" />
-          <label class="drinkcard-cc visa" for="visa2"></label>
+          <input id="emotion-emoji-3" type="radio" name="emotion-emoji" value="3" (change)="onSelectionChange('3')"/>
+          <label class="drinkcard-cc emotion-emoji-3" for="emotion-emoji-3"></label>
         </ion-col>
         <ion-col>
-          <input id="mastercard2" type="radio" name="credit-card" value="mastercard2" />
-          <label class="drinkcard-cc mastercard"for="mastercard2"></label>
+          <input id="emotion-emoji-4" type="radio" name="emotion-emoji" value="4" (change)="onSelectionChange('4')"/>
+          <label class="drinkcard-cc emotion-emoji-4"for="emotion-emoji-4"></label>
         </ion-col>
         <ion-col>
-          <input id="visa3" type="radio" name="credit-card" value="visa3" />
-          <label class="drinkcard-cc visa" for="visa3"></label>
+          <input id="emotion-emoji-5" type="radio" name="emotion-emoji" value="5" (change)="onSelectionChange('5')"/>
+          <label class="drinkcard-cc emotion-emoji-5" for="emotion-emoji-5"></label>
         </ion-col>
       </ion-row>
     </div>
+
     <ion-card-content>
       <ion-card-title>
         <span translate>Hello world !</span>

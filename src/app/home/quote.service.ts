@@ -26,4 +26,5 @@ export class QuoteService {
       .catch(() => Observable.of('Error, could not load joke :-('));
   }
 
+
 }
