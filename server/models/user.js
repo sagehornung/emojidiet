@@ -17,6 +17,6 @@ const userSchema = mongoose.Schema({
 });
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/node-login');
+mongoose.connect('mongodb://emoji:weight@ds113775.mlab.com:13775/emojidietapp');
 
 module.exports = mongoose.model('user', userSchema);
