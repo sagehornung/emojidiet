@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
   login() {
     const loading = this.loadingController.create();
     loading.present();
+    log.info('Login Form:', this.loginForm.value);
     this.authenticationService.login(this.loginForm.value)
       .finally(() => {
         this.loginForm.markAsPristine();

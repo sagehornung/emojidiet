@@ -17,6 +17,8 @@ module.exports = router => {
 
     const credentials = auth(req);
 
+    console.log(credentials);
+
     if (!credentials) {
 
       res.status(400).json({ message: 'Invalid Request !' });
@@ -42,6 +44,9 @@ module.exports = router => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
+
+    // console.log('REQ', req);
+    console.log('Server Side Stuff', name, email, password);
 
     if (!name || !email || !password || !name.trim() || !email.trim() || !password.trim()) {
 
@@ -149,4 +154,24 @@ module.exports = router => {
       return false;
     }
   }
-}
+
+  router.post('/meal', (req,res) => {
+
+    const meal = req.body.meal;
+    console.log('Meal', meal);
+    res.json('Logged a meal')
+    //   if (checkToken(req)) {
+    //
+    //     profile.getProfile(req.params.id)
+    //
+    //       .then(result => res.json(result))
+    //
+    //       .catch(err => res.status(err.status).json({ message: err.message }));
+    //
+    //   } else {
+    //
+    //     res.status(401).json({ message: 'Invalid Token !' });
+    //   }
+    // });
+  });
+};

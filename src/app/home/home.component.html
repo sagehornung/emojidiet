@@ -8,8 +8,6 @@
 </ion-header>
 <ion-content>
   <ion-card text-center>
-    <h1>Moo Moo Buck-a-roo--!!</h1>
-    <img class="logo" src="assets/cool-emoji.png" alt="angular logo"/>
     <ion-grid>
       <ion-row>
         <ion-col class="emotion-1">
@@ -45,11 +43,6 @@
           <img src="http://www.freepngimg.com/download/emoji/11-2-loudly-crying-emoji-png.png">
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col>
-          <button ion-button>Save Meal</button>
-        </ion-col>
-      </ion-row>
     </ion-grid>
     <!-- WORKING CC -->
     <!--<div class="cc-selector">-->
@@ -80,37 +73,71 @@
 
     <div class="cc-selector">
       <ion-row>
-        <ion-col>
-          <input id="emotion-emoji-1" type="radio" name="emotion-emoji" value="1" (change)="onSelectionChange('1')"/>
+        <ion-col style="width: 20%; height: auto;">
+          <input id="emotion-emoji-1" type="radio" name="emotion-emoji" value="1" (change)="onEmotionChange('1')"/>
           <label class="drinkcard-cc emotion-emoji-1" for="emotion-emoji-1"></label>
         </ion-col>
-        <ion-col>
-          <input id="emotion-emoji-2" type="radio" name="emotion-emoji" value="2" (change)="onSelectionChange('2')"/>
+        <ion-col style="width: 20%; height: auto;">
+          <input id="emotion-emoji-2" type="radio" name="emotion-emoji" value="2" (change)="onEmotionChange('2')"/>
           <label class="drinkcard-cc emotion-emoji-2"for="emotion-emoji-2"></label>
         </ion-col>
-        <ion-col>
-          <input id="emotion-emoji-3" type="radio" name="emotion-emoji" value="3" (change)="onSelectionChange('3')"/>
+        <ion-col style="width: 20%; height: auto;">
+          <input id="emotion-emoji-3" type="radio" name="emotion-emoji" value="3" (change)="onEmotionChange('3')"/>
           <label class="drinkcard-cc emotion-emoji-3" for="emotion-emoji-3"></label>
         </ion-col>
-        <ion-col>
-          <input id="emotion-emoji-4" type="radio" name="emotion-emoji" value="4" (change)="onSelectionChange('4')"/>
+        <ion-col style="width: 20%; height: auto;">
+          <input id="emotion-emoji-4" type="radio" name="emotion-emoji" value="4" (change)="onEmotionChange('4')"/>
           <label class="drinkcard-cc emotion-emoji-4"for="emotion-emoji-4"></label>
         </ion-col>
-        <ion-col>
-          <input id="emotion-emoji-5" type="radio" name="emotion-emoji" value="5" (change)="onSelectionChange('5')"/>
+        <ion-col style="width: 20%; height: auto;">
+          <input id="emotion-emoji-5" type="radio" name="emotion-emoji" value="5" (change)="onEmotionChange('5')"/>
           <label class="drinkcard-cc emotion-emoji-5" for="emotion-emoji-5"></label>
         </ion-col>
       </ion-row>
     </div>
 
+    <div class="cc-selector">
+      <ion-row>
+        <ion-col>
+          <input id="pleasure-emoji-1" type="radio" name="pleasure-emoji" value="1" (change)="onPleasureChange('1')"/>
+          <label class="drinkcard-cc pleasure-emoji-1" for="pleasure-emoji-1"></label>
+        </ion-col>
+        <ion-col>
+          <input id="pleasure-emoji-2" type="radio" name="pleasure-emoji" value="2" (change)="onPleasureChange('2')"/>
+          <label class="drinkcard-cc pleasure-emoji-2"for="pleasure-emoji-2"></label>
+        </ion-col>
+        <ion-col>
+          <input id="pleasure-emoji-3" type="radio" name="pleasure-emoji" value="3" (change)="onPleasureChange('3')"/>
+          <label class="drinkcard-cc pleasure-emoji-3" for="pleasure-emoji-3"></label>
+        </ion-col>
+        <ion-col>
+          <input id="pleasure-emoji-4" type="radio" name="pleasure-emoji" value="4" (change)="onPleasureChange('4')"/>
+          <label class="drinkcard-cc pleasure-emoji-4"for="pleasure-emoji-4"></label>
+        </ion-col>
+        <ion-col>
+          <input id="pleasure-emoji-5" type="radio" name="pleasure-emoji" value="5" (change)="onPleasureChange('5')"/>
+          <label class="drinkcard-cc pleasure-emoji-5" for="pleasure-emoji-5"></label>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <ion-row>
+      <ion-col>
+        <button ion-button (click)="onSubmit()">Save Meal</button>
+      </ion-col>
+    </ion-row>
+
+    <h1>{{clickMessage}}</h1>
+
     <ion-card-content>
       <ion-card-title>
-        <span translate>Hello world !</span>
+        <span translate>Inspirational Quote</span>
         <app-emoji-selector></app-emoji-selector>
       </ion-card-title>
       <p>
         <app-loader [isLoading]="isLoading"></app-loader>
-        <q [hidden]="isLoading">{{quote}}</q>
+        <q [hidden]="isLoading">{{quote}}</q><br>
+        <q [hidden]="isLoading">By: {{quoteAuthor}}</q>
       </p>
     </ion-card-content>
   </ion-card>

@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { HttpModule } from '@angular/http';
+import { HttpHeaders} from '@angular/common/http';
 
 export interface Credentials {
   // Customize received credentials here
@@ -13,7 +16,22 @@ export interface LoginContext {
   remember?: boolean;
 }
 
+interface RequestOptionsArgs {
+  headers?: Headers|null;
+}
 const credentialsKey = 'credentials';
+
+
+const routes = {
+  auth: (c: LoginContext) => `/authenticate`,
+  register: (c: LoginContext) => `/users`
+};
+
+export interface LoginContext {
+  // The quote's category: 'nerdy', 'explicit'...
+  category: string;
+}
+
 
 /**
  * Provides a base for authentication workflow.
@@ -21,11 +39,13 @@ const credentialsKey = 'credentials';
  */
 @Injectable()
 export class AuthenticationService {
-
+  token: string;
   private _credentials: Credentials;
-
-  constructor() {
+  private requestOptionArgs: RequestOptionsArgs;
+  private headers: Headers;
+  constructor(private http: Http) {
     this._credentials = JSON.parse(sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey));
+    // this.requestOptionArgs.headers = new Headers({name: 'Authorization', value: 'Basic dGVzdEBnbWFpbC5jb206bHVuYQ=='});
   }
 
   /**
@@ -33,16 +53,90 @@ export class AuthenticationService {
    * @param {LoginContext} context The login parameters.
    * @return {Observable<Credentials>} The user credentials.
    */
-  login(context: LoginContext): Observable<Credentials> {
-    // Replace by proper authentication call
-    const data = {
-      username: context.username,
-      token: '123456'
-    };
-    this.setCredentials(data, context.remember);
-    return Observable.of(data);
+  // login(context: LoginContext): Observable<Credentials> {
+  //   // Replace by proper authentication call
+  //   const data = {
+  //     username: context.username,
+  //     token: '123456'
+  //   };
+  //   this.setCredentials(data, context.remember);
+  //   return Observable.of(data);
+  // }
+
+  //This is to authenitcare
+  //Workign token --> Basic dGVzdEBnbWFpbC5jb206bHVuYQ==
+  login(context: LoginContext): Observable<any> {
+    const password = context.password;
+    const username = context.username;
+    const auth = 'Basic ' + btoa(username + ':' + password);
+    console.log('PW & USER --> ', password, username);
+    const h = new Headers({'Authorization': auth});
+    return this.http.post(routes.auth(context),
+      {}, {headers: h})
+      .map((response: Response) => {
+        // login successful if there's a jwt token in the response
+        const token = response.json() && response.json().token;
+        console.log('Response', response, 'Token', token);
+        // token = 'abc123'
+        if (token) {
+          // set token property
+          this.token = token;
+          console.log('This is my token!!! ', token, context.username);
+          const data = {
+            username: context.username,
+            token:  this.token,
+            remember: true
+          };
+          console.log('DATA', data);
+          this.setCredentials(data, context.remember);
+          return Observable.of(data);
+          // store username and jwt token in local storage to keep user logged in between page refreshes
+          // localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
+          // return true to indicate successful login
+          // return true;
+        } else {
+          // return false to indicate failed login
+          // return false;
+          return Observable.of(null);
+        }
+      });
   }
 
+  //Works to /users == register
+  register(context: LoginContext): Observable<any> {
+    const password = context.password;
+    const username = context.username;
+    console.log('PW & USER --> ', password, username);
+    return this.http.post(routes.register(context),
+      { name: username, email: 'test@gmail.com', password: password })
+      .map((response: Response) => {
+        // login successful if there's a jwt token in the response
+        const token = response.json() && response.json().token;
+        console.log('Response', response, 'Token', token);
+        // token = 'abc123'
+        if (token) {
+          // set token property
+          this.token = token;
+          console.log('This is my token!!! ', token, context.username);
+          const data = {
+            username: context.username,
+            token:  this.token,
+            remember: true
+          };
+          console.log('DATA', data);
+            this.setCredentials(data, context.remember);
+            return Observable.of(data);
+          // store username and jwt token in local storage to keep user logged in between page refreshes
+          // localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
+          // return true to indicate successful login
+          // return true;
+        } else {
+          // return false to indicate failed login
+          // return false;
+          return Observable.of(null);
+        }
+      });
+  }
   /**
    * Logs out the user and clear credentials.
    * @return {Observable<boolean>} True if the user was logged out successfully.

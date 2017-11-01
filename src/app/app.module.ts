@@ -14,9 +14,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
-// import { EmojiSelectorComponent } from './home/emoji-selector.component';
+import { HistoryModule } from './history/history.module';
 import { AboutModule } from './about/about.module';
 import { LoginModule } from './login/login.module';
+
 
 @NgModule({
   imports: [
@@ -28,7 +29,7 @@ import { LoginModule } from './login/login.module';
     CoreModule,
     SharedModule,
     HomeModule,
-    // EmojiSelectorComponent,
+    HistoryModule,
     AboutModule,
     LoginModule,
     AppRoutingModule

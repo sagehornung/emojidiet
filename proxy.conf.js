@@ -10,12 +10,35 @@ const HttpsProxyAgent = require('https-proxy-agent');
  */
 const proxyConfig = [
   {
-    context: '/api',
+    context: '/api/quote',
     pathRewrite: { '^/api': '' },
-    target: 'https://api.chucknorris.io',
+    // target: 'https://api.chucknorris.io/jokes/random',
+    // target: 'http://api.icndb.com/jokes/random?firstName=John&amp;lastName=Doe',
+    target: 'http://api.forismatic.com/api/1.0/',
+    changeOrigin: true,
+    secure: false
+  },
+  {
+    context: '/api',
+    pathRewrite: { '^/api': '/api/v1' },
+    target: 'http://192.168.1.5:3003',
     changeOrigin: true,
     secure: false
   }
+  // {
+  //   context: '/api',
+  //   pathRewrite: { '^/api': '/api/v1' },
+  //   // target: 'https://api.chucknorris.io',
+  //   target: 'http://192.168.1.5:3003',
+  //   changeOrigin: true,
+  //   secure: false
+  // },
+  // {
+  //   context: '/auth',
+  //   pathRewrite: function (path, req) { return path.replace('/api', '/192.168.1.5:3003/api/v1') },
+  //   target: 'http://192.168.1.5:3003',
+  //   secure: false
+  // }
 ];
 
 /*

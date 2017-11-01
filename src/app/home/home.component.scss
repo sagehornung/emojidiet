@@ -12,6 +12,10 @@ q {
   background-color: powderblue;
 }
 
+.emotion-1:hover {
+  background-color: darkred;
+}
+
 .emotion-2 {
   background-color: palegreen;
 }
@@ -56,21 +60,46 @@ q {
 
 .emotion-emoji-1 {
   background-image: url("http://www.freepngimg.com/download/emoji/1-2-wink-emoji-png.png");
+  background-size: 100%;
 }
 
 .emotion-emoji-2 {
   background-image: url("http://www.freepngimg.com/download/emoji/3-2-love-hearts-eyes-emoji-png.png");
+  background-size: 100%;
 }
 
 .emotion-emoji-3 {
   background-image: url("http://www.freepngimg.com/download/emoji/4-2-smiling-face-with-sunglasses-cool-emoji-png.png");
+  background-size: 100%;
 }
 
 .emotion-emoji-4 {
   background-image: url("http://www.freepngimg.com/download/emoji/5-2-face-with-tears-of-joy-emoji-png.png");
+  background-size: 100%;
 }
 
 .emotion-emoji-5 {
+  background-image: url("http://www.freepngimg.com/download/emoji/6-2-angel-blushing-smile-emoji-png.png");
+  background-size: 100%;
+}
+
+.pleasure-emoji-1 {
+  background-image: url("http://www.freepngimg.com/download/emoji/1-2-wink-emoji-png.png");
+}
+
+.pleasure-emoji-2 {
+  background-image: url("http://www.freepngimg.com/download/emoji/3-2-love-hearts-eyes-emoji-png.png");
+}
+
+.pleasure-emoji-3 {
+  background-image: url("http://www.freepngimg.com/download/emoji/4-2-smiling-face-with-sunglasses-cool-emoji-png.png");
+}
+
+.pleasure-emoji-4 {
+  background-image: url("http://www.freepngimg.com/download/emoji/5-2-face-with-tears-of-joy-emoji-png.png");
+}
+
+.pleasure-emoji-5 {
   background-image: url("http://www.freepngimg.com/download/emoji/6-2-angel-blushing-smile-emoji-png.png");
 }
 
@@ -94,13 +123,13 @@ q {
   -webkit-transition: all 100ms ease-in;
   -moz-transition: all 100ms ease-in;
   transition: all 100ms ease-in;
-  -webkit-filter: brightness(1.4) grayscale(0.5) opacity(0.9);
-  -moz-filter: brightness(1.4) grayscale(0.5) opacity(0.9);
-  filter: brightness(1.4) grayscale(0.5) opacity(0.9);
+  -webkit-filter: brightness(1.1) grayscale(0.1) opacity(0.9);
+  -moz-filter: brightness(1.1) grayscale(0.1) opacity(0.9);
+  filter: brightness(1.1) grayscale(0.1) opacity(0.9);
 }
 
 .drinkcard-cc:hover{
-  -webkit-filter: brightness(1.2) grayscale(.5) opacity(.95);
+  -webkit-filter: brightness(1.2) grayscale(0.5) opacity(0.95);
   -moz-filter: brightness(1.2) grayscale(.5) opacity(.95);
   filter: brightness(1.2) grayscale(.5) opacity(.95);
 }

@@ -8,6 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { QuoteService } from './quote.service';
+import { MealService } from './meal.service';
 import { EmojiSelectorComponent } from './emoji-selector.component';
 
 @NgModule({
@@ -28,7 +29,8 @@ import { EmojiSelectorComponent } from './emoji-selector.component';
     EmojiSelectorComponent
   ],
   providers: [
-    QuoteService
+    QuoteService,
+    MealService
 
   ]
 })
