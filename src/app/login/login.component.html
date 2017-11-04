@@ -16,7 +16,8 @@
           </ion-list>
         </div>
         <div class="login-container">
-          <form (ngSubmit)="login()" [formGroup]="loginForm" novalidate>
+          <!-- Login -->
+          <form (ngSubmit)="login()" [formGroup]="loginForm" *ngIf="isLoginPage" novalidate>
             <div padding ion-text color="danger" [hidden]="!error || loginForm.dirty" translate>
               Username or password incorrect.
             </div>
@@ -46,7 +47,42 @@
               <button type="submit" [disabled]="loginForm.invalid" ion-button color="primary" block>
                 <span translate>Login</span>
               </button>
+              <h5>Don't have an account? <a (click)="toggleIsLoginPage()">Create one now</a></h5>
             </div>
+          </form>
+          <!-- Register -->
+          <form (ngSubmit)="register()" [formGroup]="loginForm" *ngIf="!isLoginPage" novalidate>
+            <div padding ion-text color="danger" [hidden]="!error || loginForm.dirty" translate>
+              Username or password incorrect.
+            </div>
+            <ion-list>
+              <ion-item>
+                <ion-label floating>{{'Username' | translate}}</ion-label>
+                <ion-input type="text" formControlName="username"></ion-input>
+              </ion-item>
+              <div padding [hidden]="loginForm.controls.username.valid || loginForm.controls.username.untouched"
+                   ion-text color="danger" translate>
+                Username is required
+              </div>
+              <ion-item>
+                <ion-label floating>{{'Password' | translate}}</ion-label>
+                <ion-input type="password" formControlName="password"></ion-input>
+              </ion-item>
+              <div padding [hidden]="loginForm.controls.password.valid || loginForm.controls.password.untouched"
+                   ion-text color="danger" translate>
+                Password is required
+              </div>
+              <ion-item padding-top no-lines>
+                <ion-label><span translate>Remember me</span></ion-label>
+                <ion-checkbox formControlName="remember"></ion-checkbox>
+              </ion-item>
+            </ion-list>
+          <div padding-horizontal>
+            <button type="submit" [disabled]="loginForm.invalid" ion-button color="primary" block>
+              <span translate>Sign Up</span>
+            </button>
+            <h5>Already have an account? <a (click)="toggleIsLoginPage()">Login</a></h5>
+          </div>
           </form>
         </div>
       </ion-col>

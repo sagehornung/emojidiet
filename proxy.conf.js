@@ -21,10 +21,12 @@ const proxyConfig = [
   {
     context: '/api',
     pathRewrite: { '^/api': '/api/v1' },
-    target: 'http://192.168.1.5:3003',
+    target: 'http://104.236.54.162:3003',
     changeOrigin: true,
     secure: false
   }
+
+  //104.236.54.162
   // {
   //   context: '/api',
   //   pathRewrite: { '^/api': '/api/v1' },

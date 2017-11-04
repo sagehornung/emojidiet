@@ -7,6 +7,8 @@ const logger 	   = require('morgan');
 const router 	   = express.Router();
 const port 	     = process.env.PORT || 3003;
 
+const cors = require('cors');
+app.options('*', cors()); // include before other routes
 app.use(bodyParser.json());
 app.use(logger('dev'));
 

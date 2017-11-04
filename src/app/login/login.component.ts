@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   version: string = environment.version;
   error: string = null;
   loginForm: FormGroup;
-
+  isLoginPage: boolean;
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private platform: Platform,
@@ -32,7 +32,9 @@ export class LoginComponent implements OnInit {
     this.createForm();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.isLoginPage = true;
+  }
 
   login() {
     const loading = this.loadingController.create();
@@ -50,6 +52,27 @@ export class LoginComponent implements OnInit {
         log.debug(`Login error: ${error}`);
         this.error = error;
       });
+  }
+  register() {
+    const loading = this.loadingController.create();
+    loading.present();
+    log.info('Register Form:', this.loginForm.value);
+    this.authenticationService.register(this.loginForm.value)
+      .finally(() => {
+        this.loginForm.markAsPristine();
+        loading.dismiss();
+      })
+      .subscribe(credentials => {
+        log.debug(`${credentials.username} something happened in register`);
+        this.router.navigate(['/'], { replaceUrl: true });
+      }, error => {
+        log.debug(`Login error: ${error}`);
+        this.error = error;
+      });
+  }
+
+  toggleIsLoginPage() {
+    this.isLoginPage = !this.isLoginPage;
   }
 
   setLanguage(language: string) {
