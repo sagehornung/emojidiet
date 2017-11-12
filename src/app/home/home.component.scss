@@ -1,3 +1,11 @@
+$emo-1: #8080ff;
+$emo-1h: #66f;
+$emo-2: #b3b3ff;
+$emo-2h: #99f;
+$emo-3: #e6e6ff;
+$emo-3h: #99f;
+
+
 .logo {
   width: 150px;
   margin: 0 auto;
@@ -9,63 +17,46 @@ q {
 }
 
 .emotion-1 {
-  background-color: powderblue;
-}
-
-.emotion-1:hover {
-  background-color: darkred;
+  background-color: $emo-1;
+  &:hover {
+    background-color: $emo-1h;
+  }
 }
 
 .emotion-2 {
-  background-color: palegreen;
+  background-color: $emo-2;
+  &:hover {
+    background-color: $emo-2h;
+  }
 }
 
-.emotion-3a {
-  background-color: rosybrown;
-}
-
-.emotion-3b {
-  background-color: #604949;
+.emotion-3 {
+  background-color: $emo-3;
+  &:hover {
+    background-color: $emo-3h;
+  }
 }
 
 .emotion-4 {
-  background-color: yellowgreen;
+  background-color: $emo-2;
+  &:hover {
+    background-color: $emo-2h;
+  }
 }
 
 .emotion-5 {
-  background-color: deeppink;
+  background-color: $emo-1;
+  &:hover {
+    background-color: $emo-1h;
+  }
 }
-
-.cc-selector input{
-  margin:0;padding:0;
-  -webkit-appearance:none;
-  -moz-appearance:none;
-  appearance:none;
-}
-
-.cc-selector-2 input{
-  position:absolute;
-  z-index:999;
-}
-
-.visa{background-image:url(http://i.imgur.com/lXzJ1eB.png);}
-
-.mastercard{background-image:url(http://i.imgur.com/SJbRQF7.png);}
-
-.visa2{background-image:url(http://i.imgur.com/lXzJ1eB.png);}
-
-.mastercard2{background-image:url(http://i.imgur.com/SJbRQF7.png);}
-
-.visa3{background-image:url(http://i.imgur.com/lXzJ1eB.png);}
 
 .emotion-emoji-1 {
   background-image: url("http://www.freepngimg.com/download/emoji/1-2-wink-emoji-png.png");
-  background-size: 100%;
 }
 
 .emotion-emoji-2 {
   background-image: url("http://www.freepngimg.com/download/emoji/3-2-love-hearts-eyes-emoji-png.png");
-  background-size: 100%;
 }
 
 .emotion-emoji-3 {
@@ -75,12 +66,45 @@ q {
 
 .emotion-emoji-4 {
   background-image: url("http://www.freepngimg.com/download/emoji/5-2-face-with-tears-of-joy-emoji-png.png");
-  background-size: 100%;
 }
 
 .emotion-emoji-5 {
   background-image: url("http://www.freepngimg.com/download/emoji/6-2-angel-blushing-smile-emoji-png.png");
-  background-size: 100%;
+}
+
+.pleasure-1 {
+  background-color: #e6f7ff;
+  &:hover {
+    background-color: #cef;
+  }
+}
+
+.pleasure-2 {
+  background-color: #b3e6ff;
+  &:hover {
+    background-color: #9df;
+  }
+}
+
+.pleasure-3 {
+  background-color: #80d4ff;
+  &:hover {
+    background-color: #6cf;
+  }
+}
+
+.pleasure-4 {
+  background-color: #b3e6ff;
+  &:hover {
+    background-color: #9df;
+  }
+}
+
+.pleasure-5 {
+  background-color: #e6f7ff;
+  &:hover {
+    background-color: #cef;
+  }
 }
 
 .pleasure-emoji-1 {
@@ -103,39 +127,32 @@ q {
   background-image: url("http://www.freepngimg.com/download/emoji/6-2-angel-blushing-smile-emoji-png.png");
 }
 
-.cc-selector-2 input:active +.drinkcard-cc, .cc-selector input:active +.drinkcard-cc{opacity: .9;}
-
-.cc-selector-2 input:checked +.drinkcard-cc, .cc-selector input:checked +.drinkcard-cc{
-  -webkit-filter: none;
-  -moz-filter: none;
-  filter: none;
-  background-color: darkblue;
-  border-radius: 5px;
-}
-
-.drinkcard-cc {
+.hand {
   cursor: pointer;
-  background-size: contain;
-  background-repeat: no-repeat;
-  display: inline-block;
-  width: 100px;
-  height: 100px;
-  -webkit-transition: all 100ms ease-in;
-  -moz-transition: all 100ms ease-in;
-  transition: all 100ms ease-in;
-  -webkit-filter: brightness(1.1) grayscale(0.1) opacity(0.9);
-  -moz-filter: brightness(1.1) grayscale(0.1) opacity(0.9);
-  filter: brightness(1.1) grayscale(0.1) opacity(0.9);
 }
 
-.drinkcard-cc:hover{
-  -webkit-filter: brightness(1.2) grayscale(0.5) opacity(0.95);
-  -moz-filter: brightness(1.2) grayscale(.5) opacity(.95);
-  filter: brightness(1.2) grayscale(.5) opacity(.95);
+ion-col {
+  cursor: pointer;
+  padding: 0;
 }
 
-/* Extras */
-a:visited{color:#888}
-a{color:#444;text-decoration:none;}
-p{margin-bottom:.3em;}
+.selected-emotion {
+  background-color: #f58b0f !important;
+}
 
+.selected-pleasure {
+  background-color: #f56b10 !important;
+}
+
+.saved-meal-toast {
+  background-color: #bc470b;
+  color: red;
+}
+
+.selected-bak {
+  background-color: rgba(253, 247, 2, 0.3) !important;
+}
+
+.emoji-size {
+  font-size: 8.5vw;
+}

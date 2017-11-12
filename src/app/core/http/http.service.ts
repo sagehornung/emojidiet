@@ -77,6 +77,11 @@ export class HttpService extends Http {
     }
   }
 
+  requestNoBase(request: string|Request, options?: RequestOptionsArgs): Observable<Response> {
+    options = options || {};
+    return this.httpRequest(request, options);
+  }
+
   get(url: string, options?: RequestOptionsArgs): Observable<Response> {
     return this.request(url, extend({}, options, { method: RequestMethod.Get }));
   }

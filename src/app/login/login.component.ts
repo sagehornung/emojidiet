@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   error: string = null;
   loginForm: FormGroup;
   isLoginPage: boolean;
+  registrationMessage: string;
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private platform: Platform,
@@ -64,9 +65,12 @@ export class LoginComponent implements OnInit {
       })
       .subscribe(credentials => {
         log.debug(`${credentials.username} something happened in register`);
-        this.router.navigate(['/'], { replaceUrl: true });
+        this.isLoginPage = true;
+        this.registrationMessage = 'Success registering please login';
+        this.router.navigate(['/login'], { replaceUrl: true });
       }, error => {
         log.debug(`Login error: ${error}`);
+        this.registrationMessage = 'Something went wrong. Please tray again';
         this.error = error;
       });
   }

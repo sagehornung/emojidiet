@@ -9,24 +9,24 @@ const HttpsProxyAgent = require('https-proxy-agent');
  * For more details and options, see https://github.com/angular/angular-cli#proxy-to-backend
  */
 const proxyConfig = [
-  {
-    context: '/api/quote',
-    pathRewrite: { '^/api': '' },
-    // target: 'https://api.chucknorris.io/jokes/random',
-    // target: 'http://api.icndb.com/jokes/random?firstName=John&amp;lastName=Doe',
-    target: 'http://api.forismatic.com/api/1.0/',
-    changeOrigin: true,
-    secure: false
-  },
+  // {
+  //   context: '/api/quote',
+  //   pathRewrite: { '^/api': '' },
+  //   // target: 'https://api.chucknorris.io/jokes/random',
+  //   // target: 'http://api.icndb.com/jokes/random?firstName=John&amp;lastName=Doe',
+  //   target: 'http://api.forismatic.com/api/1.0/',
+  //   changeOrigin: true,
+  //   secure: false
+  // },
   {
     context: '/api',
     pathRewrite: { '^/api': '/api/v1' },
-    target: 'http://104.236.54.162:3003',
+    target: 'http://192.168.1.4:3003',
     changeOrigin: true,
     secure: false
   }
 
-  //104.236.54.162
+  //
   // {
   //   context: '/api',
   //   pathRewrite: { '^/api': '/api/v1' },

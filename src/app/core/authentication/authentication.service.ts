@@ -8,6 +8,7 @@ export interface Credentials {
   // Customize received credentials here
   username: string;
   token: string;
+  userId: string;
 }
 
 export interface LoginContext {
@@ -70,12 +71,13 @@ export class AuthenticationService {
     const username = context.username;
     const auth = 'Basic ' + btoa(username + ':' + password);
     console.log('PW & USER --> ', password, username);
-    const h = new Headers({'Authorization': auth});
+    const h = new Headers({'Authorization': auth, 'Access-Control-Allow-Origin': '*'});
     return this.http.post(routes.auth(context),
       {}, {headers: h})
       .map((response: Response) => {
         // login successful if there's a jwt token in the response
         const token = response.json() && response.json().token;
+        const userId = response.json() && response.json().userId;
         console.log('Response', response, 'Token', token);
         // token = 'abc123'
         if (token) {
@@ -85,7 +87,8 @@ export class AuthenticationService {
           const data = {
             username: context.username,
             token:  this.token,
-            remember: true
+            remember: true,
+            userId: userId
           };
           console.log('DATA', data);
           this.setCredentials(data, context.remember);
@@ -108,7 +111,7 @@ export class AuthenticationService {
     const username = context.username;
     console.log('PW & USER --> ', password, username);
     return this.http.post(routes.register(context),
-      { name: username, email: 'test@gmail.com', password: password })
+      { name: username, email: username, password: password })
       .map((response: Response) => {
         // login successful if there's a jwt token in the response
         const token = response.json() && response.json().token;
@@ -121,7 +124,8 @@ export class AuthenticationService {
           const data = {
             username: context.username,
             token:  this.token,
-            remember: true
+            remember: true,
+            userId: ''
           };
           console.log('DATA', data);
             this.setCredentials(data, context.remember);

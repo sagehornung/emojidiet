@@ -10,7 +10,7 @@ exports.loginUser = (email, password) =>
     user.find({email: email})
 
       .then(users => {
-
+        console.log('USER FROM MONGO', users);
         if (users.length == 0) {
 
           reject({ status: 404, message: 'User Not Found !' });
@@ -23,12 +23,12 @@ exports.loginUser = (email, password) =>
       })
 
       .then(user => {
-
+        console.log('User in promise', user);
         const hashed_password = user.hashed_password;
 
         if (bcrypt.compareSync(password, hashed_password)) {
 
-          resolve({ status: 200, message: email });
+          resolve({ status: 200, message: email, id: user._id });
 
         } else {
 

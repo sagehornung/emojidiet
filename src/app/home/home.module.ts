@@ -10,6 +10,7 @@ import { HomeComponent } from './home.component';
 import { QuoteService } from './quote.service';
 import { MealService } from './meal.service';
 import { EmojiSelectorComponent } from './emoji-selector.component';
+import { AuthenticationService } from '../core/authentication/authentication.service';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { EmojiSelectorComponent } from './emoji-selector.component';
   ],
   providers: [
     QuoteService,
-    MealService
+    MealService,
+    AuthenticationService
 
   ]
 })

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MealService } from '../home/meal.service';
 
 import { environment } from '../../environments/environment';
 
@@ -8,11 +9,20 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./history.component.scss']
 })
 export class HistoryComponent implements OnInit {
-
+  meals: Array<any>;
   version: string = environment.version;
 
-  constructor() { }
+  constructor(private mealService: MealService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.getHistory();
+  }
 
+  getHistory() {
+    this.mealService.getMeals()
+      .subscribe( data  => {
+        console.log('Q', data.data);
+        this.meals = data.data;
+      });
+  }
 }
