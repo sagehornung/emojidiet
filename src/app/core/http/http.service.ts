@@ -1,9 +1,8 @@
 import 'rxjs/add/observable/throw';
 
 import { Injectable } from '@angular/core';
-import {
-  Http, ConnectionBackend, RequestOptions, Request, Response, RequestOptionsArgs, RequestMethod, ResponseOptions
-} from '@angular/http';
+import { Http, ConnectionBackend, RequestOptions, Request, Response, RequestOptionsArgs, RequestMethod, ResponseOptions,
+  XHRBackend } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
 import { extend } from 'lodash';
@@ -22,7 +21,7 @@ const log = new Logger('HttpService');
 @Injectable()
 export class HttpService extends Http {
 
-  constructor(backend: ConnectionBackend,
+  constructor(backend: XHRBackend,
               private defaultOptions: RequestOptions,
               private httpCacheService: HttpCacheService) {
     // Customize default options here if needed
@@ -44,6 +43,7 @@ export class HttpService extends Http {
       url = request.url;
       request.url = environment.serverUrl + url;
     }
+
 
     if (!options.cache) {
       // Do not use cache
@@ -121,7 +121,13 @@ export class HttpService extends Http {
 
   // Customize the default behavior for all http requests here if needed
   private httpRequest(request: string|Request, options: RequestOptionsArgs): Observable<Response> {
-    let req = super.request(request, options);
+    let req = super.request(request, options).catch((error: Response) => {
+      if ((error.status === 401 || error.status === 403) && (window.location.href.match(/\?/g) || []).length < 2) {
+        console.log('The authentication session expires or the user is not authorised. Force refresh of the current page.');
+        window.location.href = '/login';
+      }
+      return Observable.throw(error);
+    });
     if (!options.skipErrorHandler) {
       req = req.catch(error => this.errorHandler(error));
     }

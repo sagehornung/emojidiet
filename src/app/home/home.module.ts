@@ -9,6 +9,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { QuoteService } from './quote.service';
 import { MealService } from './meal.service';
+import { ScoresService } from './score.service';
 import { EmojiSelectorComponent } from './emoji-selector.component';
 import { AuthenticationService } from '../core/authentication/authentication.service';
 
@@ -32,6 +33,7 @@ import { AuthenticationService } from '../core/authentication/authentication.ser
   providers: [
     QuoteService,
     MealService,
+    ScoresService,
     AuthenticationService
 
   ]

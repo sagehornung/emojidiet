@@ -12,9 +12,17 @@ const userSchema = mongoose.Schema({
   hashed_password	: String,
   created_at		: String,
   temp_password	: String,
-  temp_password_time: String
-
+  temp_password_time: String,
+  score: {
+    current_week_start_date: Date,
+    current_week: Number,
+    last_week: Number,
+    current_month: Number,
+    lifetime: Number
+  }
 });
+
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://emoji:weight@ds113775.mlab.com:13775/emojidietapp');

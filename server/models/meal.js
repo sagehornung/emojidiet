@@ -8,6 +8,8 @@ const mealSchema = mongoose.Schema({
   username      : String,
   emotion 			: Number,
   pleasure			: Number,
+  freebie       : Number,
+  points        : Number,
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now }

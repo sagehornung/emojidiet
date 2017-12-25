@@ -14,11 +14,9 @@
         <ion-icon name="code"></ion-icon> <span translate>Version</span> {{version}}
       </p>
       <ion-row>
-        <ion-col *ngFor="let item of meals">
-          <ion-card class="meal-history-item">
-            <div class="left">E:{{item.emotion}}</div>
-            <div class="right">P:{{item.pleasure}}</div>
-          </ion-card>
+        <ion-col *ngFor="let meal of meals">
+          <!--<app-me [icon]="meal.emotion"></app-me>-->
+          <app-me [meal]="meal"></app-me>
         </ion-col>
       </ion-row>
     </ion-card-content>

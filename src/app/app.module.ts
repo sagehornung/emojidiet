@@ -18,7 +18,6 @@ import { HistoryModule } from './history/history.module';
 import { AboutModule } from './about/about.module';
 import { LoginModule } from './login/login.module';
 
-
 @NgModule({
   imports: [
     BrowserModule,

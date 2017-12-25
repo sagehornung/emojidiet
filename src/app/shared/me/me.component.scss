@@ -1,0 +1,43 @@
+.meal-history-item {
+  background-color: rgba(28, 148, 78, 0.96);
+  width: 76px;
+  height: 100px;
+  color: #f58b0f;
+  position: relative;
+}
+
+.left {
+  align-self: stretch;
+}
+
+.right {
+  align-self: flex-end;
+}
+
+.major-emoji-value {
+  position: absolute;
+  right: 3px;
+  font-size: 1.5em;
+  top: 10px;
+}
+
+.major-emoji {
+  position: absolute;
+  left: 5px;
+  font-size: 3em;
+  top: -2px;
+}
+
+.minor-emoji-value {
+  position: absolute;
+  bottom: 0;
+  font-size: 1.2em;
+  left: 5px;
+}
+
+.minor-emoji {
+  position: absolute;
+  bottom: -5px;
+  font-size: 1.5em;
+  right: 5px;
+}

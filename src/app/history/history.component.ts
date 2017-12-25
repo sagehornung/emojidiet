@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MealService } from '../home/meal.service';
 
 import { environment } from '../../environments/environment';
+import { ModalController } from 'ionic-angular';
+
 
 @Component({
   selector: 'app-history',
@@ -11,7 +13,6 @@ import { environment } from '../../environments/environment';
 export class HistoryComponent implements OnInit {
   meals: Array<any>;
   version: string = environment.version;
-
   constructor(private mealService: MealService) { }
 
   ngOnInit() {
@@ -20,9 +21,9 @@ export class HistoryComponent implements OnInit {
 
   getHistory() {
     this.mealService.getMeals()
-      .subscribe( data  => {
-        console.log('Q', data.data);
-        this.meals = data.data;
+      .subscribe( response  => {
+        console.log('Q', response.data);
+        this.meals = response.data;
       });
   }
 }

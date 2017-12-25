@@ -11,19 +11,21 @@ const config = require('./config/config.json');
 const cors = require('cors');
 const Meal = require('./models/meal');
 var request = require('request');
+var mongoose = require('mongoose');
+var Promise = require("bluebird");
+var moment = require('moment');
+
 module.exports = router => {
 
   router.get('/', cors(), (req, res) => res.end('Welcome to the emoji diet app !'));
+
   router.get('/quote', cors(),  (req, res) => {
     request('http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en', function (error, response, body) {
       console.log('error:', error); // Print the error if one occurred
       if(error) {
         res.status(500).json({message: "Unable to get a quote"});
       }
-      console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-      console.log('body:', body); // Print the HTML for the Google homepage.
-
-      res.status(200).json(body);
+      res.status(200).send(body);
     });
   });
 
@@ -189,8 +191,9 @@ module.exports = router => {
     //Want to auth
     let userId = req.params.id;
     console.log('UserID', userId);
+
     Meal.find({userId: userId}).then( result => {
-      console.log('All meals', result);
+      //console.log('All meals', result);
       res.status(200).json({data: result});
     });
     // res.status(200).json({ data: 'Meal Get !' });
@@ -215,7 +218,9 @@ module.exports = router => {
           userId: userId,
           username: req.params.id,
           emotion: meal.emotion,
-          pleasure: meal.pleasure
+          pleasure: meal.pleasure,
+          freebie: meal.freebie,
+          points: meal.freebie > 0 ? 1 : Math.max(Number(meal.emotion), Number(meal.pleasure))
         });
         newMeal.save({meal: meal}).then(meal => {
           meal.save();
@@ -227,6 +232,62 @@ module.exports = router => {
       }
     });
 
+  router.get('/scores/:id', cors(), (req, res) => {
+    let userId = req.params.id;
 
+    var today = new Date(),
+      oneDay = ( 1000 * 60 * 60 * 24 ),
+      beginningOfDay = moment().startOf('day').toDate(),
+      thirtyDays = new Date( today.valueOf() - ( 30 * oneDay ) ),
+      fourteenDays = new Date( today.valueOf() - ( 14 * oneDay ) ),
+      sevenDays = new Date( today.valueOf() - ( 7 * oneDay ) );
+
+    let scores = [];
+    let dayScore = Meal.aggregate([
+      { $match:
+          {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": beginningOfDay}}
+      },
+      { $group : { _id : null, day_score : { $avg : '$pleasure' } } }
+    ]);
+    let weekScore = Meal.aggregate([
+      { $match:
+          {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": sevenDays}}
+      },
+      { $group : { _id : null, current_week_score : { $avg : '$pleasure' } } }
+    ]);
+    let lastWeekScore = Meal.aggregate([
+      { $match:
+          {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": fourteenDays, "$lt": sevenDays}}
+      },
+      { $group : { _id : null, last_week_score : { $avg : '$pleasure' } } }
+    ]);
+    let monthScore = Meal.aggregate([
+      { $match:
+          {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": thirtyDays}}
+      },
+      { $group : { _id : null, month_score : { $avg : '$pleasure' } } }
+    ]);
+    let totalScore = Meal.aggregate([
+      { $match: {"userId": mongoose.Types.ObjectId(userId)}},
+      { $group : { _id : null, total_score : { $avg : '$pleasure' } } }
+    ]);
+    scores.push(dayScore);
+    scores.push(weekScore);
+    scores.push(lastWeekScore);
+    scores.push(monthScore);
+    scores.push(totalScore);
+    Promise.all(scores).then(function(data) {
+      console.log('DATA SCORES', data);
+      const scores = {
+        day:          data[0].day_score,
+        current_week: data[1].current_week_score,
+        last_week:    data[2].last_week_score,
+        month:        data[3].month_score,
+        total:        data[4].total_score,
+      };
+      res.status(201).json(data);
+    });
+
+  });
 
 };

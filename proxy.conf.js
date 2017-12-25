@@ -21,7 +21,7 @@ const proxyConfig = [
   {
     context: '/api',
     pathRewrite: { '^/api': '/api/v1' },
-    target: 'http://192.168.1.4:3003',
+    target: 'http://192.168.1.3:3003',
     changeOrigin: true,
     secure: false
   }

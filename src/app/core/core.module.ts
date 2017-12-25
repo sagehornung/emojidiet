@@ -12,7 +12,7 @@ import { I18nService } from './i18n.service';
 import { HttpService } from './http/http.service';
 import { HttpCacheService } from './http/http-cache.service';
 
-export function createHttpService(backend: ConnectionBackend,
+export function createHttpService(backend: XHRBackend,
                                   defaultOptions: RequestOptions,
                                   httpCacheService: HttpCacheService) {
   return new HttpService(backend, defaultOptions, httpCacheService);
