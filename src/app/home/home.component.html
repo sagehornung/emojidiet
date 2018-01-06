@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title><span translate>Home</span></ion-title>
-    <app-emoji-selector></app-emoji-selector>
+    <!--<app-emoji-selector></app-emoji-selector>-->
   </ion-navbar>
 </ion-header>
 <ion-content>
@@ -27,27 +27,27 @@
 
       <h3>Emotion Emoji Scale</h3>
       <ion-row>
-        <ion-col width-20 (click)="onEmotionChange('1')" [ngClass]="[selectedEmotion == '1' ? 'selected-bak' : '']">
+        <ion-col (click)="onEmotionChange('1')" [ngClass]="[selectedEmotion == '1' ? 'selected-bak' : '']">
           <ion-card class="emotion-1 emoji-size"  [ngClass]="[selectedEmotion == '1' ? 'selected-emotion' : '']" >
             😤
           </ion-card>
         </ion-col>
-        <ion-col width-20 (click)="onEmotionChange('2')" [ngClass]="[selectedEmotion == '2' ? 'selected-bak' : '']">
+        <ion-col (click)="onEmotionChange('2')" [ngClass]="[selectedEmotion == '2' ? 'selected-bak' : '']">
           <ion-card class="emotion-2 emoji-size"  [ngClass]="[selectedEmotion == '2' ? 'selected-emotion' : '']">
             😎
           </ion-card>
         </ion-col>
-        <ion-col width-20  (click)="onEmotionChange('3')" [ngClass]="[selectedEmotion == '3' ? 'selected-bak' : '']">
+        <ion-col (click)="onEmotionChange('3')" [ngClass]="[selectedEmotion == '3' ? 'selected-bak' : '']">
           <ion-card class="emotion-3 emoji-size"  [ngClass]="[selectedEmotion == '3' ? 'selected-emotion' : '']">
             😐
           </ion-card>
         </ion-col>
-        <ion-col width-20  (click)="onEmotionChange('4')" [ngClass]="[selectedEmotion == '4' ? 'selected-bak' : '']">
+        <ion-col (click)="onEmotionChange('4')" [ngClass]="[selectedEmotion == '4' ? 'selected-bak' : '']">
           <ion-card class="emotion-4 emoji-size"  [ngClass]="[selectedEmotion == '4' ? 'selected-emotion' : '']">
             😂
           </ion-card>
         </ion-col>
-        <ion-col width-20 (click)="onEmotionChange('5')" [ngClass]="[selectedEmotion == '5' ? 'selected-bak' : '']">
+        <ion-col (click)="onEmotionChange('5')" [ngClass]="[selectedEmotion == '5' ? 'selected-bak' : '']">
           <ion-card class="emotion-5 emoji-size"  [ngClass]="[selectedEmotion == '5' ? 'selected-emotion' : '']">
             🙈
           </ion-card>
@@ -85,42 +85,26 @@
         </ion-col>
       </ion-row>
 
-      <!--<h3>Pleasure Emoji Scale</h3>-->
-      <!--<ion-row>-->
-        <!--<ion-col (click)="onPleasureChange('1')" [ngClass]="[selectedPleasure == '1' ? 'selected-bak' : '']">-->
-          <!--<ion-card class="pleasure-1"  [ngClass]="[selectedPleasure == '1' ? 'selected-pleasure' : '']">-->
-            <!--<img src="http://www.freepngimg.com/download/emoji/7-2-sad-crying-emoji-png.png">-->
-          <!--</ion-card>-->
-        <!--</ion-col>-->
-        <!--<ion-col (click)="onPleasureChange('2')" [ngClass]="[selectedPleasure == '2' ? 'selected-bak' : '']">-->
-          <!--<ion-card class="pleasure-2"  [ngClass]="[selectedPleasure == '2' ? 'selected-pleasure' : '']">-->
-            <!--<img src="http://www.freepngimg.com/download/emoji/8-2-fearful-emoji-png.png">-->
-          <!--</ion-card>-->
+      <h3>Freebies</h3>
+      <ion-row>
+        <ion-col (click)="onFreebieSelect('1')" [ngClass]="[selectedFreebie == '1' ? 'selected-bak' : '']">
+          <ion-card class="freebie-1 emoji-size"  [ngClass]="[selectedFreebie == '1' ? 'selected-freebie' : '']">
+            <!--🥗-->
+            <img src="../../assets/img/salad.svg" style="width: 27%; height: auto; margin: auto;">
+          </ion-card>
+        </ion-col>
+        <ion-col (click)="onFreebieSelect('2')" [ngClass]="[selectedFreebie == '2' ? 'selected-bak' : '']">
+          <ion-card class="freebie-2 emoji-size"  [ngClass]="[selectedFreebie == '2' ? 'selected-freebie' : '']">
+            🥤
+          </ion-card>
+        </ion-col>
+      </ion-row>
 
-        <!--</ion-col>-->
-        <!--<ion-col (click)="onPleasureChange('3')" [ngClass]="[selectedPleasure == '3' ? 'selected-bak' : '']">-->
-          <!--<ion-card class="pleasure-3"  [ngClass]="[selectedPleasure == '3' ? 'selected-pleasure' : '']">-->
-            <!--<img src="http://www.freepngimg.com/download/emoji/9-2-tongue-out-emoji-png.png">-->
-          <!--</ion-card>-->
-
-        <!--</ion-col>-->
-        <!--<ion-col (click)="onPleasureChange('4')" [ngClass]="[selectedPleasure == '4' ? 'selected-bak' : '']">-->
-          <!--<ion-card class="pleasure-4"  [ngClass]="[selectedPleasure == '4' ? 'selected-pleasure' : '']">-->
-            <!--<img src="http://www.freepngimg.com/download/emoji/10-2-unamused-face-emoji-png.png">-->
-          <!--</ion-card>-->
-
-        <!--</ion-col>-->
-        <!--<ion-col (click)="onPleasureChange('5')" [ngClass]="[selectedPleasure == '5' ? 'selected-bak' : '']">-->
-          <!--<ion-card class="pleasure-1"  [ngClass]="[selectedPleasure == '5' ? 'selected-pleasure' : '']">-->
-            <!--<img src="http://www.freepngimg.com/download/emoji/11-2-loudly-crying-emoji-png.png">-->
-          <!--</ion-card>-->
-        <!--</ion-col>-->
-      <!--</ion-row>-->
     </ion-grid>
 
     <ion-row>
       <ion-col>
-        <button ion-button (click)="onSubmit()" [disabled]="selectedPleasure == '' || selectedEmotion == '' ? true : false">Save Meal</button>
+        <button ion-button (click)="onSubmit()" [disabled]="(selectedPleasure != '' && selectedEmotion != '') || selectedFreebie != '' ? false : true">Save Meal</button>
       </ion-col>
     </ion-row>
 

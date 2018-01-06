@@ -11,7 +11,7 @@ exports.loginUser = (email, password) =>
 
       .then(users => {
         console.log('USER FROM MONGO', users);
-        if (users.length == 0) {
+        if (users.length === 0) {
 
           reject({ status: 404, message: 'User Not Found !' });
 

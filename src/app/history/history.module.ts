@@ -9,6 +9,7 @@ import { HistoryComponent } from './history.component';
 
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
+import { ModalPageComponent } from  './edit-meal.modal';
 
 @NgModule({
   imports: [
@@ -20,10 +21,12 @@ import { SharedModule } from '../shared/shared.module';
     HistoryRoutingModule
   ],
   entryComponents: [
-    HistoryComponent
+    HistoryComponent,
+    ModalPageComponent
   ],
   declarations: [
-    HistoryComponent
+    HistoryComponent,
+    ModalPageComponent
   ],
   providers: [
     MealService

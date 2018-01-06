@@ -3,7 +3,9 @@ import { MealService } from '../home/meal.service';
 
 import { environment } from '../../environments/environment';
 import { ModalController } from 'ionic-angular';
-
+import { NavController} from 'ionic-angular';
+import { ModalPageComponent } from './edit-meal.modal';
+import { Meal } from '../home/meal.component';
 
 @Component({
   selector: 'app-history',
@@ -13,7 +15,7 @@ import { ModalController } from 'ionic-angular';
 export class HistoryComponent implements OnInit {
   meals: Array<any>;
   version: string = environment.version;
-  constructor(private mealService: MealService) { }
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController, private mealService: MealService) { }
 
   ngOnInit() {
     this.getHistory();
@@ -26,4 +28,15 @@ export class HistoryComponent implements OnInit {
         this.meals = response.data;
       });
   }
+
+  public openModal(meal: Meal) {
+    const modalPage = this.modalCtrl.create(ModalPageComponent, meal );
+    modalPage.onDidDismiss(() => {
+      // Call the method to do whatever in your home.ts
+      console.log('Modal closed');
+      this.getHistory();
+    });
+    modalPage.present();
+  }
+
 }

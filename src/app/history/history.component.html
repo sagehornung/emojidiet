@@ -14,9 +14,13 @@
         <ion-icon name="code"></ion-icon> <span translate>Version</span> {{version}}
       </p>
       <ion-row>
-        <ion-col *ngFor="let meal of meals">
+        <ion-col *ngFor="let meal of meals; let i = index">
           <!--<app-me [icon]="meal.emotion"></app-me>-->
-          <app-me [meal]="meal"></app-me>
+          <div (click)="openModal(meal)">
+            <app-me [meal]="meal"></app-me>
+          </div>
+
+          <!--<button ion-button (click)="openModal()">Open Modal</button>-->
         </ion-col>
       </ion-row>
     </ion-card-content>

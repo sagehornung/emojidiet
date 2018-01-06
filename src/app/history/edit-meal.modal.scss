@@ -126,11 +126,13 @@ ion-col {
 }
 
 .emoji-size {
-  font-size: 8.5vw;
+  font-size: 4vw;
+  text-align: center;
 }
 
 @media screen and (min-width: 1500px) {
   .emoji-size {
-    font-size: 6vw;
+    font-size: 3vw;
+    text-align: center;
   }
 }

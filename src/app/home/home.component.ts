@@ -24,15 +24,20 @@ export class HomeComponent implements OnInit {
   isLoading: boolean;
   selectedEmotion = '';
   selectedPleasure = '';
+  selectedFreebie = '';
   selectedAnEmotion = false;
   selectedAPleasure = false;
+  selectedAFreebie = false;
+  saveEnabeled = false;
   dayScore: number;
   weekScore: number;
   lastWeekScore: number;
   constructor(public toastCtrl: ToastController, private quoteService: QuoteService,
-              private mealService: MealService, private scoresService: ScoresService) {}
+              private mealService: MealService, private scoresService: ScoresService) {
+  }
 
   ngOnInit() {
+    this.saveEnabeled = (this.selectedAnEmotion && this.selectedAPleasure) || this.selectedAFreebie;
     this.isLoading = true;
     this.quote = 'Perspective: Nothing is impossible.  You made it here in the universe against infinitesimal ' +
       'odds. You can accomplish, against all odds, what seems to be impossible when you believe in yourself.';
@@ -49,26 +54,27 @@ export class HomeComponent implements OnInit {
     this.getScores();
   }
   onEmotionChange(entry: string) {
-    // this.selectedEntry = Object.assign({}, this.selectedEntry, entry);
     this.selectedEmotion = entry;
     console.log('Selected Emotion = ', this.selectedEmotion);
     this.selectedAnEmotion = true;
   }
 
   onPleasureChange(entry: string) {
-    // this.selectedEntry = Object.assign({}, this.selectedEntry, entry);
     this.selectedPleasure = entry;
     console.log('Selected Pleasure = ', this.selectedPleasure);
     this.selectedAPleasure = false;
   }
 
+  onFreebieSelect(entry: string) {
+    this.selectedFreebie = this.selectedFreebie === entry ? '' : entry;
+    this.selectedAFreebie = this.selectedFreebie !== '';
+  }
+
   onSubmit() {
-    //this.clickMessage = 'You are my hero! Emotion = ' + this.selectedEmotion + ' Pleasure = ' + this.selectedPleasure;
     const emotion = this.selectedEmotion;
     const pleasure = this.selectedPleasure;
-    console.log('Test');
-    console.log(this.meal);
-    const meal = new Meal(emotion, pleasure);
+    const freebie = this.selectedFreebie !== '' ? this.selectedFreebie : '0';
+    const meal = new Meal(emotion, pleasure, freebie);
     this.mealService.saveMeal(meal)
       .subscribe((res: any) => {
         console.log(res);
@@ -79,7 +85,7 @@ export class HomeComponent implements OnInit {
   mealSavedToast(emotion: string, pleasure: string) {
     const toast = this.toastCtrl.create({
       message: `Meal Saved -- Emotion: ${emotion}, Pleasure: ${pleasure}` ,
-      duration: 4000,
+      duration: 3000,
       position: 'top',
       cssClass: 'saved-meal-toast'
     });
@@ -93,9 +99,9 @@ export class HomeComponent implements OnInit {
     this.scoresService.getScores()
       .subscribe(scores => {
         console.log('Yay I scored some scores', scores);
-        this.dayScore = Math.round(scores[0][0].day_score * 100) / 100;
-        this.weekScore = scores[1][0].current_week_score;
-        this.lastWeekScore = scores[2][0] ? scores[2][0].last_week_score : 0;
+        this.dayScore = scores[0][0] ? Math.round(scores[0][0].day_score * 100) / 100 : 0;
+        this.weekScore = scores[1][0] ? Math.round(scores[1][0].current_week_score  * 100) / 100 : 0;
+        this.lastWeekScore = scores[2][0] ? Math.round(scores[2][0].last_week_score * 100) / 100 : 0;
         console.log(this.dayScore, this.weekScore, this.lastWeekScore);
       });
   }

@@ -1,10 +1,13 @@
 <ion-card class="meal-history-item">
   <div>
-    <span class="major-emoji-value">{{meal.emotion}}E</span>
-    <span class="major-emoji">{{emotionIcon}}</span>
+    <span class="major-emoji-value">{{majorPts}}</span>
+    <span class="major-emoji">{{majorEmoji}}</span>
   </div>
   <div>
-    <span class="minor-emoji-value">{{meal.pleasure}}P</span>
-    <span class="minor-emoji">{{pleasureIcon}}</span>
+    <span class="meal-date">{{meal.created | date: 'short'}}</span>
+  </div>
+  <div>
+    <span class="minor-emoji-value">{{!isFreebie ? minorPts : ''}}</span>
+    <span class="minor-emoji">{{!isFreebie ? minorEmoji : ''}}</span>
   </div>
 </ion-card>

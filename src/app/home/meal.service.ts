@@ -48,6 +48,29 @@ export class MealService {
     return this.http.get('/meal/user/' + this._credentials.userId, {headers: authHeader} )
       .map((res: Response) => res.json())
       // .map(body => body.value)
+      .catch(() => Observable.of('Error, could not get meal :-('));
+  }
+  deleteMeal(mealId: string): Observable<any> {
+    this._credentials = this.authService.credentials;
+    this.authToken = this._credentials.token;
+    console.log('CREDENTIALS -->', this._credentials);
+    const authHeader = new Headers({'x-access-token': this.authToken, 'Access-Control-Allow-Origin': '*'});
+    return this.http.delete('/meal/' + mealId + '/user/' + this._credentials.userId, {headers: authHeader} )
+      .map((res: Response) => res.json())
+      // .map(body => body.value)
+      .catch(() => Observable.of('Error, could not delete meal :-('));
+  }
+  updateMeal(meal: Meal): Observable<any> {
+    console.log(meal);
+    this._credentials = this.authService.credentials;
+    this.authToken = this._credentials.token;
+    console.log('CREDENTIALS -->', this._credentials);
+    const authHeader = new Headers({'x-access-token': this.authToken, 'Access-Control-Allow-Origin': '*'});
+    return this.http.put('/meal',
+      {meal, username: this._credentials.username, userId: this._credentials.userId},
+      {headers: authHeader} )
+      .map((res: Response) => res.json())
+      // .map(body => body.value)
       .catch(() => Observable.of('Error, could not save meal :-('));
   }
 }

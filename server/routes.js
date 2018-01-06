@@ -171,13 +171,14 @@ module.exports = router => {
     }
   }
 
-  function authorize(req, user) {
+  function authorize(req, id) {
     const token = req.headers['x-access-token'];
-    console.log('TOKEN', token, user);
+    console.log('TOKEN', token, id);
     if (token) {
       try {
         var decoded = jwt.verify(token, config.secret);
-        return decoded.message === user;
+        console.log('Decoded', decoded);
+        return decoded.id === id;
       } catch(err) {
         return false;
       }
@@ -204,16 +205,16 @@ module.exports = router => {
     const meal = req.body.meal;
     const user = req.body.username;
     const userId = req.body.userId;
-    console.log('Meal', meal);
+    console.log('Meal', meal, 'Username', user);
     // const token = req.headers['x-access-token'];
     // var decoded = jwt.verify(token, config.secret);
 
       // if(decoded.message === user) {
-      if (authorize(req, user)) {
+      if (authorize(req, userId)) {
 
-        profile.getProfile(req.params.id)
-          .then(result => res.json(result))
-          .catch(err => res.status(err.status).json({ message: err.message }));
+        // profile.getProfile(req.params.id)
+        //   .then(result => res.json(result))
+        //   .catch(err => res.status(err.status).json({ message: err.message }));
         let newMeal = new Meal({
           userId: userId,
           username: req.params.id,
@@ -224,69 +225,135 @@ module.exports = router => {
         });
         newMeal.save({meal: meal}).then(meal => {
           meal.save();
+          res.status(201).json({ message: 'Meal Saved !' });
         });
-        res.status(201).json({ message: 'Meal Saved !' });
+
       } else {
 
         res.status(401).json({ message: 'Invalid Token !' });
       }
     });
 
+  router.put('/meal', cors(), (req,res) => {
+
+    const meal = req.body.meal;
+    const user = req.body.username;
+    const userId = req.body.userId;
+    console.log('Meal', meal, 'Username', user);
+
+    if (authorize(req, userId)) {
+
+      let newMeal = new Meal({
+        userId: userId,
+        username: req.params.id,
+        emotion: meal.emotion,
+        pleasure: meal.pleasure,
+        freebie: meal.freebie,
+        points: meal.freebie > 0 ? 1 : Math.max(Number(meal.emotion), Number(meal.pleasure))
+      });
+      Meal.findByIdAndUpdate(meal.id,
+        { $set:
+            { emotion: newMeal.emotion,
+              pleasure: newMeal.pleasure,
+              freebie: newMeal.freebie,
+              points: newMeal.points
+            }
+          },
+        { new: true },
+        function (err, meal) {
+          // if (err) {
+          //   res.status(500);
+          // }
+          res.status(201).json({ message: 'Meal Updated !' });
+        });
+    } else {
+
+      res.status(401).json({ message: 'Invalid Token !' });
+    }
+  });
+
+  router.delete('/meal/:id/user/:uid', cors(), (req,res) => {
+    let userId = req.params.uid;
+    let mealId = req.params.id;
+    if (authorize(req, userId)) {
+      Meal.remove({_id: mealId}, function (err) {
+        if (err) {
+          //return handleError(err);
+        }
+        res.status(202).json({ message: 'Meal Deleted !' });
+      });
+    } else {
+      res.status(401).json({ message: 'Invalid Token !' });
+    }
+  });
+
   router.get('/scores/:id', cors(), (req, res) => {
+
+    const user = req.body.username;
     let userId = req.params.id;
 
-    var today = new Date(),
-      oneDay = ( 1000 * 60 * 60 * 24 ),
-      beginningOfDay = moment().startOf('day').toDate(),
-      thirtyDays = new Date( today.valueOf() - ( 30 * oneDay ) ),
-      fourteenDays = new Date( today.valueOf() - ( 14 * oneDay ) ),
-      sevenDays = new Date( today.valueOf() - ( 7 * oneDay ) );
+    console.log('USER', user);
+    if (authorize(req, userId)) {
 
-    let scores = [];
-    let dayScore = Meal.aggregate([
-      { $match:
-          {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": beginningOfDay}}
-      },
-      { $group : { _id : null, day_score : { $avg : '$pleasure' } } }
-    ]);
-    let weekScore = Meal.aggregate([
-      { $match:
-          {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": sevenDays}}
-      },
-      { $group : { _id : null, current_week_score : { $avg : '$pleasure' } } }
-    ]);
-    let lastWeekScore = Meal.aggregate([
-      { $match:
-          {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": fourteenDays, "$lt": sevenDays}}
-      },
-      { $group : { _id : null, last_week_score : { $avg : '$pleasure' } } }
-    ]);
-    let monthScore = Meal.aggregate([
-      { $match:
-          {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": thirtyDays}}
-      },
-      { $group : { _id : null, month_score : { $avg : '$pleasure' } } }
-    ]);
-    let totalScore = Meal.aggregate([
-      { $match: {"userId": mongoose.Types.ObjectId(userId)}},
-      { $group : { _id : null, total_score : { $avg : '$pleasure' } } }
-    ]);
-    scores.push(dayScore);
-    scores.push(weekScore);
-    scores.push(lastWeekScore);
-    scores.push(monthScore);
-    scores.push(totalScore);
-    Promise.all(scores).then(function(data) {
-      console.log('DATA SCORES', data);
-      const scores = {
-        day:          data[0].day_score,
-        current_week: data[1].current_week_score,
-        last_week:    data[2].last_week_score,
-        month:        data[3].month_score,
-        total:        data[4].total_score,
-      };
-      res.status(201).json(data);
-    });
+      var today = new Date(),
+        oneDay = ( 1000 * 60 * 60 * 24 ),
+        beginningOfDay = moment().startOf('day').toDate(),
+        thirtyDays = new Date( today.valueOf() - ( 30 * oneDay ) ),
+        fourteenDays = new Date( today.valueOf() - ( 14 * oneDay ) ),
+        sevenDays = new Date( today.valueOf() - ( 7 * oneDay ) );
+
+      let scores = [];
+      let dayScore = Meal.aggregate([
+        { $match:
+            {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": beginningOfDay}}
+        },
+        { $group : { _id : null, day_score : { $avg : '$pleasure' } } }
+      ]);
+      let weekScore = Meal.aggregate([
+        { $match:
+            {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": sevenDays}}
+        },
+        { $group : { _id : null, current_week_score : { $avg : '$pleasure' } } }
+      ]);
+      let lastWeekScore = Meal.aggregate([
+        { $match:
+            {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": fourteenDays, "$lt": sevenDays}}
+        },
+        { $group : { _id : null, last_week_score : { $avg : '$pleasure' } } }
+      ]);
+      let monthScore = Meal.aggregate([
+        { $match:
+            {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": thirtyDays}}
+        },
+        { $group : { _id : null, month_score : { $avg : '$pleasure' } } }
+      ]);
+      let totalScore = Meal.aggregate([
+        { $match: {"userId": mongoose.Types.ObjectId(userId)}},
+        { $group : { _id : null, total_score : { $avg : '$pleasure' } } }
+      ]);
+      scores.push(dayScore);
+      scores.push(weekScore);
+      scores.push(lastWeekScore);
+      scores.push(monthScore);
+      scores.push(totalScore);
+      Promise.all(scores).then(function(data) {
+        console.log('DATA SCORES', data);
+        const scores = {
+          day:          data[0].day_score,
+          current_week: data[1].current_week_score,
+          last_week:    data[2].last_week_score,
+          month:        data[3].month_score,
+          total:        data[4].total_score,
+        };
+        res.status(201).json(data);
+      });
+
+    } else {
+      res.status(401).json({ message: 'Invalid Token !' });
+    }
+
+
+
 
   });
 
