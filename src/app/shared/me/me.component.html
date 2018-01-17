@@ -1,7 +1,8 @@
 <ion-card class="meal-history-item">
   <div>
     <span class="major-emoji-value">{{majorPts}}</span>
-    <span class="major-emoji">{{majorEmoji}}</span>
+    <span class="major-emoji" [hidden]="isFreebie">{{majorEmoji}}</span>
+    <img [src]="imgPath"  [hidden]="!isFreebie" style="width: 65%;">
   </div>
   <div>
     <span class="meal-date">{{meal.created | date: 'short'}}</span>

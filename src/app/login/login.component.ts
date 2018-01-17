@@ -22,7 +22,10 @@ export class LoginComponent implements OnInit {
   version: string = environment.version;
   error: string = null;
   loginForm: FormGroup;
+  pwForm: FormGroup;
   isLoginPage: boolean;
+  isPasswordPage: boolean;
+  isNewAccoutPage: boolean
   registrationMessage: string;
   constructor(private router: Router,
               private formBuilder: FormBuilder,
@@ -31,6 +34,7 @@ export class LoginComponent implements OnInit {
               private i18nService: I18nService,
               private authenticationService: AuthenticationService) {
     this.createForm();
+    this.createPwForm();
   }
 
   ngOnInit() {
@@ -74,9 +78,14 @@ export class LoginComponent implements OnInit {
         this.error = error;
       });
   }
+  pwReset() {
 
-  toggleIsLoginPage() {
-    this.isLoginPage = !this.isLoginPage;
+  }
+
+  togglePage(page: string) {
+    this.isLoginPage = page === 'login';
+    this.isNewAccoutPage = page === 'new';
+    this.isPasswordPage = page === 'pw';
   }
 
   setLanguage(language: string) {
@@ -102,5 +111,13 @@ export class LoginComponent implements OnInit {
       remember: true
     });
   }
+
+  private createPwForm() {
+    this.pwForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      remember: true
+    });
+  }
+
 
 }

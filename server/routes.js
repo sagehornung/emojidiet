@@ -287,6 +287,8 @@ module.exports = router => {
     }
   });
 
+
+
   router.get('/scores/:id', cors(), (req, res) => {
 
     const user = req.body.username;

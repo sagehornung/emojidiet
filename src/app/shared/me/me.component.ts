@@ -20,6 +20,7 @@ export class MeComponent implements OnInit {
   minorPts: string;
   isFreebie: boolean;
   equalPoints: boolean;
+  imgPath: string;
   constructor() {
   }
 
@@ -77,12 +78,15 @@ export class MeComponent implements OnInit {
   getFreebieIcon() {
     switch ( Number(this.meal.freebie)) {
       case 1: {
+        this.imgPath = 'assets/img/salad.png';
         return '🥗';
       }
       case 2: {
+        this.imgPath = 'assets/img/shake.png';
         return '🥤';
       }
       default: {
+        this.imgPath = '';
         return null;
       }
     }

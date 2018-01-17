@@ -92,8 +92,10 @@ export class HomeComponent implements OnInit {
     toast.present();
     this.selectedEmotion = '';
     this.selectedPleasure = '';
+    this.selectedFreebie = '';
     this.selectedAnEmotion = false;
     this.selectedAPleasure = false;
+    this.selectedAFreebie = false;
   }
   getScores() {
     this.scoresService.getScores()

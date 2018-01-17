@@ -47,11 +47,13 @@
               <button type="submit" [disabled]="loginForm.invalid" ion-button color="primary" block>
                 <span translate>Login</span>
               </button>
-              <h5>Don't have an account? <a (click)="toggleIsLoginPage()">Create one now</a></h5>
+              <h5>Don't have an account? <a (click)="togglePage('new')">Create one now</a></h5>
+              <h5>Forgot your password? <a (click)="togglePage('pw')">Reset Password</a></h5>
             </div>
           </form>
+
           <!-- Register -->
-          <form (ngSubmit)="register()" [formGroup]="loginForm" *ngIf="!isLoginPage" novalidate>
+          <form (ngSubmit)="register()" [formGroup]="loginForm" *ngIf="isNewAccoutPage" novalidate>
             <div padding ion-text color="danger" [hidden]="!error || loginForm.dirty" translate>
               Username or password incorrect.
             </div>
@@ -81,9 +83,34 @@
             <button type="submit" [disabled]="loginForm.invalid" ion-button color="primary" block>
               <span translate>Sign Up</span>
             </button>
-            <h5>Already have an account? <a (click)="toggleIsLoginPage()">Login</a></h5>
+            <h5>Already have an account? <a (click)="togglePage('login')">Login</a></h5>
           </div>
           </form>
+
+          <!-- PW Reset -->
+          <form (ngSubmit)="pwReset()" [formGroup]="pwForm" *ngIf="isPasswordPage" novalidate>
+            <div padding ion-text color="danger" [hidden]="!error || pwForm.dirty" translate>
+              Username or password incorrect.
+            </div>
+            <ion-list>
+              <ion-item>
+                <ion-label floating>{{'Email' | translate}}</ion-label>
+                <ion-input type="text" formControlName="username"></ion-input>
+              </ion-item>
+              <div padding [hidden]="pwForm.controls.username.valid || pwForm.controls.username.untouched"
+                   ion-text color="danger" translate>
+                Email address is required
+              </div>
+
+            </ion-list>
+            <div padding-horizontal>
+              <button type="submit" [disabled]="pwForm.invalid" ion-button color="primary" block>
+                <span translate>Send Password Reset Email</span>
+              </button>
+              <h5>Back to login page <a (click)="togglePage('login')">Login</a></h5>
+            </div>
+          </form>
+
           <h5 style="color: green">{{registrationMessage}}</h5>
         </div>
       </ion-col>
