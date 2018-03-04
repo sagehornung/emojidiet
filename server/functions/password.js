@@ -6,6 +6,8 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const randomstring = require("randomstring");
 const config = require('../config/config.json');
+const async = require('async');
+
 
 exports.changePassword = (email, password, newPassword) =>
 
@@ -29,26 +31,78 @@ exports.changePassword = (email, password, newPassword) =>
 
         } else {
 
-          reject({ status: 401, message: 'Invalid Old Password !' });
+          return reject({ status: 401, message: 'Invalid Old Password !' });
         }
       })
 
-      .then(user => resolve({ status: 200, message: 'Password Updated Sucessfully !' }))
+      .then(user => {
+        return resolve({ status: 200, message: 'Password Updated Sucessfully !' })
+      })
 
-      .catch(err => reject({ status: 500, message: 'Internal Server Error !' }));
+      .catch(err => {
+        return reject({ status: 500, message: 'Internal Server Error !' })
+      });
 
   });
 
-exports.resetPasswordInit = email =>
+exports.forgot = function(req, res) {
 
+  async.waterfall([
+    function(done) {
+      crypto.randomBytes(20, function(err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+    function(token, done) {
+      User.findOne({ email: req.body.email }, function(err, user) {
+        if (!user) {
+          return done('Something went wrong');
+        }
+
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+        user.save(function(err) {
+          done(err, token, user);
+        });
+      });
+    },
+    function(token, user, done) {
+
+      const mailOptions = {
+
+        from: `"${config.name}" <${config.email}>`,
+        to: email,
+        subject: 'Reset Password Request ',
+        html: `Hello ${user.name},
+
+    			     Your reset password token is <b>${random}</b>.
+    			If you are viewing this mail from a Android Device click this <a href="http://learn2crack/${random}">link</a>.
+    			The token is valid for only 2 minutes.
+
+    			Thanks,
+    			Emoji Diet.`
+
+      };
+      done(null, 'done');
+    }
+  ], function(err) {
+    if (err) return res.json({message: err});
+    return res.json({message: 'Success'});
+  });
+}
+
+exports.resetPasswordInit = (email) => {
+  console.log('This is a test');
   new Promise((resolve, reject) => {
-
+    console.log('This is a test 2');
     const random = randomstring.generate(8);
 
     user.find({ email: email })
 
       .then(users => {
-
+        console.log('Found a user', users);
         if (users.length == 0) {
 
           reject({ status: 404, message: 'User Not Found !' });
@@ -69,7 +123,14 @@ exports.resetPasswordInit = email =>
 
       .then(user => {
 
-        const transporter = nodemailer.createTransport(`smtps://${config.email}:${config.password}@smtp.gmail.com`);
+        // const transporter = nodemailer.createTransport(`smtps://${config.email}:${config.password}@smtp.gmail.com`);
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: config.email,
+            pass: config.password
+          }
+        });
 
         const mailOptions = {
 
@@ -78,12 +139,12 @@ exports.resetPasswordInit = email =>
           subject: 'Reset Password Request ',
           html: `Hello ${user.name},
 
-    			     Your reset password token is <b>${random}</b>. 
-    			If you are viewing this mail from a Android Device click this <a href="http://learn2crack/${random}">link</a>. 
+    			     Your reset password token is <b>${random}</b>.
+    			If you are viewing this mail from a Android Device click this <a href="http://emjoidiet/${random}">link</a>.
     			The token is valid for only 2 minutes.
 
     			Thanks,
-    			Learn2Crack.`
+    			Emoji Diet Team.`
 
         };
 
@@ -93,7 +154,7 @@ exports.resetPasswordInit = email =>
 
       .then(info => {
 
-        console.log(info);
+        console.log('INFO', info);
         resolve({ status: 200, message: 'Check mail for instructions' })
       })
 
@@ -104,6 +165,7 @@ exports.resetPasswordInit = email =>
 
       });
   });
+};
 
 exports.resetPasswordFinish = (email, token, password) =>
 

@@ -10,10 +10,15 @@ const password = require('./functions/password');
 const config = require('./config/config.json');
 const cors = require('cors');
 const Meal = require('./models/meal');
-var request = require('request');
-var mongoose = require('mongoose');
-var Promise = require("bluebird");
-var moment = require('moment');
+let request = require('request');
+let mongoose = require('mongoose');
+let moment = require('moment');
+const user = require('./models/user');
+const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+const randomstring = require("randomstring");
+
+
 
 module.exports = router => {
 
@@ -124,19 +129,147 @@ module.exports = router => {
     }
   });
 
-  router.post('/users/:id/password', cors(), (req,res) => {
+  router.post('/users/password/new', cors(), (req,res) => {
 
-    const email = req.params.id;
+    console.log('BODY', req.body);
+
+    const email = req.body.email;
+    const token = req.body.pwOld;
+    const password = req.body.password;
+
+    console.log('PW new ', email, token, password);
+
+    user.find({email: email})
+
+      .then(users => {
+
+        let user = users[0];
+
+        const diff = new Date() - new Date(user.temp_password_time);
+        const seconds = Math.floor(diff / 1000);
+        console.log(`Seconds : ${seconds}`);
+
+        if (seconds < 3600) {
+          return user;
+        } else {
+          // reject({status: 401, message: 'Time Out ! Try again'});
+          res.status(401).json({message: 'Time Out ! Try again'});
+        }
+
+      }).then(user => {
+
+        console.log('COMPARE', token, user.temp_password);
+
+      if (bcrypt.compareSync(token, user.temp_password)) {
+
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(password, salt);
+        user.hashed_password = hash;
+        user.temp_password = undefined;
+        user.temp_password_time = undefined;
+
+        user.save();
+        res.status(201).json({message: 'PW Updated'});
+
+      } else {
+
+        res.status(401).json({message: 'Invalid Token !'});
+      }
+    });
+
+  });
+  //Forgot pw
+  router.post('/users/password', cors(), (req,res) => {
+
+
+    const email = req.body.email;
     const token = req.body.token;
     const newPassword = req.body.password;
+    const hash = '';
 
     if (!token || !newPassword || !token.trim() || !newPassword.trim()) {
 
-      password.resetPasswordInit(email)
+      // password.resetPasswordInit(email)
+      //   .then(result => res.status(result.status).json({ message: result.message }))
+      //   .catch(err => res.status(err.status).json({ message: err.message }));
+      // const random = randomstring.generate(8);
 
-        .then(result => res.status(result.status).json({ message: result.message }))
+        console.log('This is a test 2');
+        const random = randomstring.generate(8);
 
-        .catch(err => res.status(err.status).json({ message: err.message }));
+        user.find({ email: email })
+
+          .then(users => {
+            console.log('Found a user', users);
+            if (users.length === 0) {
+              res.status(404).json({message: 'User Not Found !' });
+              // reject({ status: 404, message: 'User Not Found !' });
+
+            } else {
+
+              let user = users[0];
+
+              const salt = bcrypt.genSaltSync(10);
+              const hash = bcrypt.hashSync(random, salt);
+
+              user.temp_password = hash;
+              user.temp_password_time = new Date();
+
+              return user.save();
+            }
+          })
+
+          .then(user => {
+
+            // const transporter = nodemailer.createTransport(`smtps://${config.email}:${config.password}@smtp.gmail.com`);
+            // const transporter = nodemailer.createTransport({
+            let transporter = nodemailer.createTransport({
+              host: 'smtp.gmail.com',
+              port: 465,
+              secure: true,
+              auth: {
+                user: config.email,
+                pass: config.password
+              }
+            });
+
+            //   service: 'gmail',
+            //   auth: {
+            //     user: config.email,
+            //     pass: config.password
+            //   }
+            // });
+
+            const mailOptions = {
+
+              from: `"${config.name}" <${config.email}>`,
+              to: email,
+              subject: 'Reset Password Request ',
+              html: `Hello ${user.name},
+
+          Here is your temporary password 
+          
+          ${random}
+    			
+    			Click this <a href="localhost:4200/login">link</a>. and click on Make new Password to create a new password
+    			The token is valid for only 1 hour.
+
+    			Thanks,
+    			Emoji Diet Team.`
+
+            };
+            console.log('mail Ops', mailOptions);
+            transporter.sendMail(mailOptions, (error, info) => {
+              console.log('MAIL ERR', error);
+              if (error) {
+                res.status(500).json({message: 'Something went wrong' });
+                return;
+              }
+              res.status(200).json({ message: 'Check mail for instructions'  });
+
+            });
+
+          });
 
     } else {
 
@@ -156,7 +289,7 @@ module.exports = router => {
 
       try {
 
-        var decoded = jwt.verify(token, config.secret);
+        let decoded = jwt.verify(token, config.secret);
         console.log('DECODED', decoded, decoded.message === req.params.id, req.params.id);
         return decoded.message === req.params.id;
 
@@ -189,14 +322,24 @@ module.exports = router => {
 
   router.get('/meal/user/:id', cors(), (req,res) => {
     console.log('Found meals GET');
-    //Want to auth
     let userId = req.params.id;
-    console.log('UserID', userId);
+    //Want to auth
+    if (authorize(req, userId)) {
+      console.log('UserID', userId);
+      const query = {userId: userId}
+      const projection = {}
 
-    Meal.find({userId: userId}).then( result => {
-      //console.log('All meals', result);
-      res.status(200).json({data: result});
-    });
+      const options = { sort: {created: -1}, limit: 50 }
+      Meal.find(query, projection, options).exec(function(err, result) {
+        res.status(200).json({data: result});
+      });
+      //Meal.find({userId: userId}).then( result => {
+        //console.log('All meals', result);
+        // res.status(200).json({data: result});
+      // });
+    } else {
+      res.status(401).json({ message: 'Invalid Token !' });
+    }
     // res.status(200).json({ data: 'Meal Get !' });
   });
 
@@ -309,29 +452,29 @@ module.exports = router => {
         { $match:
             {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": beginningOfDay}}
         },
-        { $group : { _id : null, day_score : { $avg : '$pleasure' } } }
+        { $group : { _id : null, day_score : { $avg : '$points' } } }
       ]);
       let weekScore = Meal.aggregate([
         { $match:
             {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": sevenDays}}
         },
-        { $group : { _id : null, current_week_score : { $avg : '$pleasure' } } }
+        { $group : { _id : null, current_week_score : { $avg : '$points' } } }
       ]);
       let lastWeekScore = Meal.aggregate([
         { $match:
             {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": fourteenDays, "$lt": sevenDays}}
         },
-        { $group : { _id : null, last_week_score : { $avg : '$pleasure' } } }
+        { $group : { _id : null, last_week_score : { $avg : '$points' } } }
       ]);
       let monthScore = Meal.aggregate([
         { $match:
             {"userId": mongoose.Types.ObjectId(userId), "created": {"$gte": thirtyDays}}
         },
-        { $group : { _id : null, month_score : { $avg : '$pleasure' } } }
+        { $group : { _id : null, month_score : { $avg : '$points' } } }
       ]);
       let totalScore = Meal.aggregate([
         { $match: {"userId": mongoose.Types.ObjectId(userId)}},
-        { $group : { _id : null, total_score : { $avg : '$pleasure' } } }
+        { $group : { _id : null, total_score : { $avg : '$points' } } }
       ]);
       scores.push(dayScore);
       scores.push(weekScore);
